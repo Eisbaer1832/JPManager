@@ -1,39 +1,122 @@
-$('#uploadVideoInput').click(function() {
-  $(this).parents().find('#uploadVideoBtn').click();
+const FirstNameInput = document.getElementById("FirstNameInput")
+const LastNameInput = document.getElementById("LastNameInput")
+const LeitfrageInput = document.getElementById("LeitfrageInput")
+const YearInput = document.getElementById("YearInput")
+const SubjectInput = document.getElementById("SubjectInput")
+const PresenterVisibleInput = document.getElementById("PresenterVisibleInput")
+const PresenterVisibleHelper = document.getElementById("PresenterVisibleHelper")
+const DurationInput = document.getElementById("DurationInput")
+const DurationleHelper = document.getElementById("DurationleHelper")
+const SourcesCheckInput = document.getElementById("SourcesCheckInput")
+const SourcesCheckHelper = document.getElementById("SourcesCheckHelper")
+const SourcesInput = document.getElementById("SourcesInput")
+const VideoUploadInput = document.getElementById("VideoUploadInput")
+const VideoUploadHelper = document.getElementById("VideoUploadHelper")
+const ConsentInput = document.getElementById("ConsentInput")
+const ConsentHelper = document.getElementById("ConsentHelper")
+
+let durationOkay = true
+
+$(document).ready(function(){
+    $('#DurationInput').on("input", function(){
+		const duration = DurationInput.value
+		console.log(duration)
+		if (duration >= 275 && duration <= 315) {
+			DurationInput.classList.remove("is-danger")
+			DurationInput.classList.add("is-success")
+			DurationleHelper.classList.add("is-hidden")
+			durationOkay = true
+		}else {
+			DurationInput.classList.remove("is-success")
+			DurationInput.classList.add("is-danger")
+			DurationleHelper.classList.remove("is-hidden")
+			durationOkay = false
+		}
+	});
 });
 
 
-async function uploadToWebDAV(serverUrl, username, password, remotePath, file) {
-  const targetUrl = `${serverUrl.replace(/\/$/, '')}/${remotePath.replace(/^\//, '')}`;
+function isInputEmpty(input) {
+	if (input.value.trim().length == 0) {
+		input.classList.add("is-danger")
+		input.classList.remove("is-success")
 
-  try {
-    const response = await fetch(targetUrl, {
-      method: "PUT",
-      headers: {
-        "Authorization": "Basic " + btoa(`${username}:${password}`),
-        "Content-Type": file.type || "application/octet-stream"
-      },
-      body: file
-    });
+		return true
+	}else{
+		input.classList.remove("is-danger")
+		input.classList.add("is-success")
 
-    if (response.ok) {
-      console.log("✅ File uploaded successfully!");
-    } else {
-      console.error("❌ Upload failed:", response.status, response.statusText);
-    }
-  } catch (err) {
-    console.error("⚠️ Error uploading file:", err);
-  }
+	}
+	return false
 }
 
-// Example usage:
-const serverUrl = "https://example.com/webdav"; 
-const username = "myUser";
-const password = "myPass";
-const remotePath = "uploads/test.txt"; // Path on the WebDAV server
+function isCheckboxTicked(input, helper) {
+	if (input.checked) {
+		helper.classList.add("is-hidden")
+		return true
+	}else {
+		helper.classList.remove("is-hidden")
+	}
+	return false
+}
 
-// For browser: file can be from an <input type="file">
-// Example: const file = document.querySelector("input[type=file]").files[0];
-const file = new Blob(["Hello WebDAV!"], { type: "text/plain" });
+function checkForErrors() {
+	let passed = true;
+	passed = isInputEmpty(LastNameInput) ? false : passed
+	passed = isInputEmpty(FirstNameInput) ? false : passed
+	passed = isInputEmpty(LeitfrageInput) ? false : passed
+	passed = isInputEmpty(YearInput) ? false : passed
+	passed = isCheckboxTicked(PresenterVisibleInput, PresenterVisibleHelper) ? true : passed
+	passed = isCheckboxTicked(SourcesCheckInput, SourcesCheckHelper) ? true : passed
+	passed = isInputEmpty(SourcesInput) ? false : passed
+	passed = isCheckboxTicked(ConsentInput, ConsentHelper) ? true : passed
 
-uploadToWebDAV(serverUrl, username, password, remotePath, file);
+	if (SubjectInput.value == "Fachbereich wählen"){
+		SubjectInput.classList.add("is-danger")
+		SubjectInput.classList.remove("is-success")
+		passed = false
+	}else {
+		SubjectInput.classList.remove("is-danger")
+		SubjectInput.classList.add("is-sucess")
+	}
+
+	if (VideoUploadInput.files[0] == undefined) {
+		VideoUploadHelper.classList.remove("is-hidden")
+		passed = false
+	}else {
+		VideoUploadHelper.classList.add("is-hidden")
+	}
+
+	passed = durationOkay ? passed : false
+	return passed
+}
+
+
+function submit() {
+	if (checkForErrors()) {
+		const data = {
+			firstName: FirstNameInput.value,
+			lastName: LastNameInput.value,
+			leitfrage: LeitfrageInput.value,
+			year: YearInput.value,
+			subject: SubjectInput.value,
+			duration: DurationInput.value,
+			sources: SourcesInput.value,
+		};
+		const blob = new Blob([JSON.stringify(data)], { type: "application/json" })
+
+		sendFile(new File([blob], data.firstName + " " + data.lastName + " : " + data.subject +".json", { type: "application/json" }))
+		sendFile(VideoUploadInput.files[0])
+	}
+}
+
+async function sendFile(file) {
+	const formData = new FormData();
+	formData.append('file', file);
+
+	const res = await fetch('/upload', {
+		method: 'POST',
+		body: formData
+	});
+}
+
