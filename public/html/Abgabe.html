@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jugend Präsentiert Abgabe</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@1.0.4/css/bulma.min.css">
+    <link rel="stylesheet" href="/public/css/style.css">
+</head>
+<body>
+    <section class="hero">
+    <div class="hero-body">
+        <p class="title">TGG Jugend Präsentiert Schulwettbewerb</p>
+        <p class="subtitle">Gebe hier dein Video ab</p>
+    </div>
+    </section> 
+
+
+    <!--FORM Chapter-->
+    <div class="form">
+        <div class="field">
+            <label class="label">Vorname</label>
+            <div class="control">
+                <input class="input" type="text" placeholder="Vorname">
+            </div>
+        </div>
+
+        <div class="field">
+            <label class="label">Nachname</label>
+            <div class="control">
+                <input class="input" type="text" placeholder="Nachname">
+            </div>
+        </div>
+
+        <div class="field">
+            <label class="label">Leitfrage</label>
+            <div class="control">
+                <input class="input" type="text" placeholder="Leitfrage">
+            </div>
+        </div>
+
+        <div class="field">
+            <label class="label">Klasse/Jahrgang</label>
+            <div class="control">
+                <input class="input" type="text" placeholder="Klasse/Jahrgang">
+            </div>
+        </div>
+
+        <div class="field">
+            <label class="label">Fachbereich</label>
+            <div class="control">
+                <div class="select">
+                <select>
+                    <option>Informatik</option>
+                    <option>Biologie</option>
+                    <option>Chemie</option>
+                    <option>Physik</option>
+                    <option>Mathematik</option>
+                </select>
+                </div>
+            </div>
+        </div>
+
+        <h1 class="title">Checkliste</h1>
+        <div class="field">
+            <label class="label">Der Präsentator ist sichtbar</label>
+            <div class="control">
+                <label class="checkbox">
+                    <input type="checkbox" />
+                    Ja
+                </label>
+            </div>
+        </div>
+
+        <div class="field">
+            <label class="label">Dauer in Sekunden</label>
+            <div class="control">
+                <input class="input" type="text" placeholder="Dauer in Sekunden">
+            </div>
+        </div>
+
+        <div class="field">
+            <label class="label">Die Quellen sind nicht in den 5 Minuten mit inbegriffen</label>
+            <div class="control">
+                <label class="checkbox">
+                    <input type="checkbox" />
+                    Ja
+                </label>
+            </div>
+        </div>
+
+        <div class="field ">
+            <label class="label">Quellen</label>
+            <div class="control">
+                <textarea class="textarea" placeholder="Liste aller verwendeten Quellen"></textarea>
+            </div>
+        </div>
+
+        <div class="field ">
+            <label class="label">Video</label>
+            <div class="control">
+                <input type="file" class="d-none" id="addVideosInput">
+                <button class="btn btn-secondary" id="addVideosBtn">Upload Video <i class="fa fa-camera"></i> </button>
+            </div>
+        </div>
+
+
+        <div class="field">
+            <div class="control">
+                <label class="checkbox">
+                <input type="checkbox">
+                Ich stimme Kram zu
+                </label>
+            </div>
+        </div>
+
+        <div class="field is-grouped">
+            <div class="control">
+                <button class="button is-link">Submit</button>
+            </div>
+            <div class="control">
+                <button class="button is-link is-light">Cancel</button>
+            </div>
+        </div>
+    </div>
+</body>
+ <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+<script src="../js/script.js"></script>
+</html>
