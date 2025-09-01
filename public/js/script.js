@@ -119,10 +119,9 @@ async function sendFile(file, filename, data, dataname) {
     formData.append('data', data)
 
     formData.append('filename', filename);   
-    formData.append('dataname', dataname)
 	const res = await fetch('/upload', {
 		method: 'POST',
-        body: JSON.stringify({ reviewer: reviewerID })
+		body: formData,
 	});
 }
 

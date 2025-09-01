@@ -5,3 +5,7 @@
 .disabled {
     display: none;
 }
+
+.ListContainer {
+    width: 100%;
+}

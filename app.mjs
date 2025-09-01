@@ -73,12 +73,15 @@ const uploadMultiple = multer({ storage: multer.memoryStorage() }).fields([
 
 
 app.post('/getReviewItems', express.text(), async (req, res) => {
+  UUIDs = JSON.parse(fs.readFileSync('UUIDs.json', 'utf8')).videos;
+
   try {
     console.log(req.body.trim())
     let show = []
 
     for (let i = 0; i < UUIDs.length; i++) {
-        if (UUIDs[i].reviewer1 == req.body|| UUIDs[i].reviewer2 == req.body|| UUIDs[i].reviewer3 == req.body) {
+      console.log(UUIDs[i])
+        if (UUIDs[i].reviewer1.name == req.body|| UUIDs[i].reviewer2.name == req.body|| UUIDs[i].reviewer3.name == req.body) {
             console.log("can see" + UUIDs[i].uuid)
             show.push(UUIDs[i].uuid)
         }
@@ -90,6 +93,24 @@ app.post('/getReviewItems', express.text(), async (req, res) => {
     res.status(500).json({ error: 'Fehler beim Upload' });
   }
 });
+
+
+
+
+app.post('/getVideo', express.text(), async (req, res) => {
+  const dir = req.body.trim()
+
+  try {
+    const data = await webdavClient.getFileContents(`JP Testing/${dir}/data.json`, { format: "text" })
+
+    res.status(200).json({ data: data});
+  } catch (err) {
+    logger.error(err);
+    res.status(500).json({ error: 'Fehler beim Laden der Videos' });
+  }
+});
+
+
 
 
 
@@ -121,7 +142,7 @@ app.post('/upload', uploadMultiple, async (req, res) => {
     fs.writeFileSync('UUIDs.json', jsonData, 'utf8');
 
     await webdavClient.createDirectory(`JP Testing/${dir}`, { recursive: true });
-
+    console.log(req.files)
     if (req.files.file) {
       await webdavClient.putFileContents(
         `JP Testing/${dir}/${req.body.filename}`,
@@ -130,7 +151,7 @@ app.post('/upload', uploadMultiple, async (req, res) => {
     }
     if (req.files.data) {
       await webdavClient.putFileContents(
-        `JP Testing/${dir}/${req.body.dataname}`,
+        `JP Testing/${dir}/data.json`,
         req.files.data[0].buffer
       );
     }

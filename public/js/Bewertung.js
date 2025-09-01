@@ -19,6 +19,30 @@ async function fetchVids(reviewerID) {
         headers: { 'Content-Type': 'text/plain' },
 		body: reviewerID
 	}) 
-    console.log(await res.json().videos)
+    const data = await res.json()
+    console.log(data)
+    data.videos.forEach(element => {
+        $("<div></div>").load("/public/html/videocard.html", function(responseText) {
+            let updatedHtml = responseText
+                .replace(/VideoID/, element)
+                .replace(/FunctionVideoID/, element)
+
+
+        
+            $(this).html(updatedHtml);
+            $("#insertList").append($(this));
+        });
+    })
+}
+
+
+async function fetchReviewData(VideoID) {
+    const res = await fetch('/getVideo', {
+		method: 'POST',
+        headers: { 'Content-Type': 'text/plain' },
+		body: VideoID
+	})
+    const data = await res.json()
+    console.log(data)
 
 }
