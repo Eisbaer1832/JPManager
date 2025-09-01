@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jugend Präsentiert Abgabe</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@1.0.4/css/bulma.min.css">
+    <link rel="stylesheet" href="/public/css/style.css">
+</head>
+<body>
+    <section class="hero">
+    <div class="hero-body">
+        <p class="title">TGG Jugend Präsentiert Schulwettbewerb</p>
+        <p class="subtitle">Bewertung der Inhalte</p>
+    </div>
+    </section> 
+
+
+    <div class="form box" id="loginContainer">
+        <p class="title">Melde dich hier mit deiner Bewerter-ID an!</p>
+        <div class="field has-addons">
+			<div class="control">
+                <input id="loginInput" class="input" type="text" placeholder="Bewerter-ID">
+            </div>
+            <div class="control">
+                <button onclick="login()" class="button is-info">Starten</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="form box disabled" id="listContainer"> 
+        <p class="title">Wähle das Video aus, welches du bearbeiten möchtest!</p>
+        <div class="field has-addons">
+            <div id="insertList"></div>
+        </div>
+    </div>
+
+    <div class="disabled" id="bewertungsContainer"> 
+        <!--FORM Chapter-->
+        <div class="form">
+            <div class="field">
+                <label class="label">Fragestellung/Hypothese klar konturiert</label>
+                <div class="buttons has-addons">
+                    <button class="button is-success is-selected">0</button>
+                    <button class="button">1</button>
+                    <button class="button">2</button>
+                    <button class="button ">3</button>
+                    <button class="button">4</button>
+                    <button class="button">5</button>
+                    <button class="button">6</button>
+                    <button class="button">7</button>
+                </div>
+            </div>
+
+            <div class="field">
+                <label class="label">Thema/Inhalte gut erarbeitet</label>
+                <div class="buttons has-addons">
+                    <button class="button is-success is-selected">0</button>
+                    <button class="button">1</button>
+                    <button class="button">2</button>
+                    <button class="button ">3</button>
+                    <button class="button">4</button>
+                    <button class="button">5</button>
+                    <button class="button">6</button>
+                    <button class="button">7</button>
+                </div>
+            </div>
+
+            <div class="field">
+                <label class="label">Informationsgehalt angemessen</label>
+                <div class="buttons has-addons">
+                    <button class="button is-success is-selected">0</button>
+                    <button class="button">1</button>
+                    <button class="button">2</button>
+                    <button class="button ">3</button>
+                    <button class="button">4</button>
+                    <button class="button">5</button>
+                    <button class="button">6</button>
+                    <button class="button">7</button>
+                </div>        
+            </div>
+
+            <div class="field">
+                <label class="label">Sachlich richtig</label>
+                <div class="buttons has-addons">
+                    <button class="button is-success is-selected">0</button>
+                    <button class="button">1</button>
+                    <button class="button">2</button>
+                    <button class="button ">3</button>
+                    <button class="button">4</button>
+                    <button class="button">5</button>
+                    <button class="button">6</button>
+                    <button class="button">7</button>
+                </div>
+            </div>
+    </div>
+</body>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+	<script src="/public/js/script.js"></script>
+	<script src="/public/js/Bewertung.js"></script>
+</html>

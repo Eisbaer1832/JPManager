@@ -1,0 +1,19 @@
+{
+  "videos": [
+    {
+      "uuid": 547893,
+      "reviewer1": {
+        "name": "carla",
+        "done": false
+      },
+      "reviewer2": {
+        "name": "ben",
+        "done": false
+      },
+      "reviewer3": {
+        "name": "greta",
+        "done": false
+      }
+    }
+  ]
+}
