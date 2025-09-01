@@ -4,6 +4,10 @@
 	    	"port": 9876,
 			"proxyPort" : 9877,
 			"encrypted": false
-
-	}
+	},
+    "storage" : {
+        "url" :  "https://cloud.tbwebtech.de/remote.php/dav/files/eisbaer1832/",
+        "username" : "eisbaer1832",
+        "password" : "2004"
+    }
 }

@@ -1,3 +1,7 @@
 .form {
     margin: 5rem;
 }
+
+.disabled {
+    display: none;
+}

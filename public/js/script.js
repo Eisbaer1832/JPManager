@@ -105,18 +105,24 @@ function submit() {
 		};
 		const blob = new Blob([JSON.stringify(data)], { type: "application/json" })
 
-		sendFile(new File([blob], data.firstName + " " + data.lastName + " : " + data.subject +".json", { type: "application/json" }))
-		sendFile(VideoUploadInput.files[0])
+        const fileNamePrefix = data.firstName + " " + data.lastName + " : " + data.subject 
+        let ending = VideoUploadInput.files[0].name
+        ending = ending.split(".")
+		sendFile(VideoUploadInput.files[0], fileNamePrefix + ending[ending.length-1], new File([blob], "the name", { type: "application/json" }), fileNamePrefix + ".json")
 	}
 }
 
-async function sendFile(file) {
+async function sendFile(file, filename, data, dataname) {
 	const formData = new FormData();
+    
 	formData.append('file', file);
+    formData.append('data', data)
 
+    formData.append('filename', filename);   
+    formData.append('dataname', dataname)
 	const res = await fetch('/upload', {
 		method: 'POST',
-		body: formData
+        body: JSON.stringify({ reviewer: reviewerID })
 	});
 }
 
