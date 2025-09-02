@@ -6,7 +6,7 @@ const Popup = document.getElementById("Popup")
 const PopupText = document.getElementById("PopupText")
 const videoPlayer = document.getElementById('videoPlayer');
 
-
+const radioButtons = ["radio1", "radio2","radio3","radio4"]
 
 function login() {
     const rUUID = document.getElementById("loginInput").value
@@ -84,3 +84,34 @@ function showData(data, video) {
     $("#Duration").html(`Länge: ${data.duration}`);
     $("#Sources").html(`Quellen: ${data.sources}`);
 }
+
+function radioButton(id) {
+    const container = document.getElementById(id);
+    const buttons = container.querySelectorAll('.buttons .button');
+
+    buttons.forEach(button => {
+        button.addEventListener('click', () => {
+            // Remove 'is-selected' from all buttons in this container
+            buttons.forEach(btn => btn.classList.remove('is-selected', "is-success"));
+            // Add 'is-selected' to the clicked button
+            button.classList.add('is-selected', "is-success");
+        });
+    });
+}
+function submit() {
+
+    radioButtons.forEach(group => { 
+        const container = document.getElementById(group);
+        const buttons = container.querySelectorAll('.buttons .button');
+
+        buttons.forEach(button => {
+            if(button.classList.contains("is-selected")) {
+                console.log(button.innerHTML)
+            }
+        });
+    })
+}
+
+radioButtons.forEach(group => { 
+    radioButton(group)
+})

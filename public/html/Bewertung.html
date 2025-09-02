@@ -22,7 +22,6 @@
         <div class="modal-content">
             <div class="box">
             <p id="PopupText"></p>
-            <!-- Your content -->
             </div>
         </div>
         <button class="modal-close is-large" aria-label="close" ></button>
@@ -63,11 +62,11 @@
         <div class="form">
             <div class="field">
                 <label class="label">Fragestellung/Hypothese klar konturiert</label>
-                <div class="buttons has-addons">
+                <div class="buttons has-addons" id="radio1">
                     <button class="button is-success is-selected">0</button>
                     <button class="button">1</button>
                     <button class="button">2</button>
-                    <button class="button ">3</button>
+                    <button class="button">3</button>
                     <button class="button">4</button>
                     <button class="button">5</button>
                     <button class="button">6</button>
@@ -77,11 +76,11 @@
 
             <div class="field">
                 <label class="label">Thema/Inhalte gut erarbeitet</label>
-                <div class="buttons has-addons">
-                    <button class="button is-success is-selected">0</button>
-                    <button class="button">1</button>
+                <div class="buttons has-addons" id="radio2">
+                    <button type="radio"class="button is-success is-selected">0</button>
+                    <button  type="radio" class="button">1</button>
                     <button class="button">2</button>
-                    <button class="button ">3</button>
+                    <button class="button">3</button>
                     <button class="button">4</button>
                     <button class="button">5</button>
                     <button class="button">6</button>
@@ -91,7 +90,7 @@
 
             <div class="field">
                 <label class="label">Informationsgehalt angemessen</label>
-                <div class="buttons has-addons">
+                <div class="buttons has-addons" id="radio3">
                     <button class="button is-success is-selected">0</button>
                     <button class="button">1</button>
                     <button class="button">2</button>
@@ -105,7 +104,7 @@
 
             <div class="field">
                 <label class="label">Sachlich richtig</label>
-                <div class="buttons has-addons">
+                <div class="buttons has-addons" id="radio4">
                     <button class="button is-success is-selected">0</button>
                     <button class="button">1</button>
                     <button class="button">2</button>
@@ -116,9 +115,15 @@
                     <button class="button">7</button>
                 </div>
             </div>
+        </div>
+        
+        <div class="form field is-grouped">
+            <div class="control">
+                <button class="button is-link" onclick="submit()">Abgeben</button>
+            </div>
+        </div>
     </div>
 </body>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-	<script src="/public/js/script.js"></script>
 	<script src="/public/js/Bewertung.js"></script>
 </html>

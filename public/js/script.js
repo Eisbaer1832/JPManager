@@ -15,6 +15,10 @@ const VideoUploadHelper = document.getElementById("VideoUploadHelper")
 const ConsentInput = document.getElementById("ConsentInput")
 const ConsentHelper = document.getElementById("ConsentHelper")
 
+const Popup = document.getElementById("Popup")
+const PopupText = document.getElementById("PopupText")
+
+
 let durationOkay = true
 
 $(document).ready(function(){
@@ -114,7 +118,8 @@ function submit() {
 
 async function sendFile(file, filename, data, dataname) {
 	const formData = new FormData();
-    
+    Popup.classList.add("is-active")
+    PopupText.innerHTML = "<p class='has-text-info'> Video wird hochgeladen...<p> <p class='has-text-danger'>Schließe dieses Fenster nicht!<p>"
 	formData.append('file', file);
     formData.append('data', data)
 
@@ -123,5 +128,11 @@ async function sendFile(file, filename, data, dataname) {
 		method: 'POST',
 		body: formData,
 	});
+	if (res.error == undefined) {
+        PopupText.innerHTML = "<p class='has-text-success'> Dein Video wurde erfolgreich abgegeben. Du kannst diesen Tab jetzt schließen! <p>"
+    }else{
+        PopupText.innerHTML = "<p class='has-text-danger'> Fehler beim Hochladen des Videos, lade die Seite neu und vesuche es noch einmal!<p>"
+    }
+	console.log(await res)
 }
 
