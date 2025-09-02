@@ -111,7 +111,17 @@ app.post('/getVideoData', express.text(), async (req, res) => {
   	}
 });
 
+app.post('/submitReview', express.json(), async (req, res) => {
+    const { reviewerID, video, ratings } = req.body;
+    console.log(reviewerID);
+    console.log(ratings);   
 
+    const data = await webdavClient.getFileContents(`JP Testing/${video}/data.json`, { format: "text" })
+	console.log(data)
+	//TODO Save the data
+
+    res.sendStatus(200);
+});
 
 
 app.post('/getVideo', express.text(), async (req, res) => {

@@ -5,11 +5,12 @@ const insertList = document.getElementById("insertList")
 const Popup = document.getElementById("Popup")
 const PopupText = document.getElementById("PopupText")
 const videoPlayer = document.getElementById('videoPlayer');
-
+let rUUID = ""
+let currentVid = ""
 const radioButtons = ["radio1", "radio2","radio3","radio4"]
 
 function login() {
-    const rUUID = document.getElementById("loginInput").value
+    rUUID = document.getElementById("loginInput").value
     console.log(rUUID)
     loginContainer.classList.add("disabled")
     listContainer.classList.remove("disabled")
@@ -40,6 +41,7 @@ async function fetchVids(reviewerID) {
 
 
 async function fetchReviewData(VideoID) {
+    currentVid = VideoID
     Popup.classList.add("is-active")
     PopupText.innerHTML = "Video wird geladen"
 
@@ -98,18 +100,29 @@ function radioButton(id) {
         });
     });
 }
-function submit() {
-
+async function submit() {
+    values = []
+    
     radioButtons.forEach(group => { 
         const container = document.getElementById(group);
         const buttons = container.querySelectorAll('.buttons .button');
 
         buttons.forEach(button => {
             if(button.classList.contains("is-selected")) {
-                console.log(button.innerHTML)
+                values.push(button.innerHTML)
             }
         });
     })
+    const review = {
+        reviewer: rUUID,
+        video: currentVid,
+        rating: values
+    }
+    const res = await fetch('/submitReview', {
+		method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+		body: JSON.stringify(review)
+	}) 
 }
 
 radioButtons.forEach(group => { 
