@@ -105,10 +105,10 @@ function submit() {
 		};
 		const blob = new Blob([JSON.stringify(data)], { type: "application/json" })
 
-        const fileNamePrefix = data.firstName + " " + data.lastName + " : " + data.subject 
+		//passing the file format, since the actual file name is uniform
         let ending = VideoUploadInput.files[0].name
         ending = ending.split(".")
-		sendFile(VideoUploadInput.files[0], fileNamePrefix + ending[ending.length-1], new File([blob], "the name", { type: "application/json" }), fileNamePrefix + ".json")
+		sendFile(VideoUploadInput.files[0], ending[ending.length-1], new File([blob], "the name", { type: "application/json" }))
 	}
 }
 

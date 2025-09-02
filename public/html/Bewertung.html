@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Jugend Präsentiert Abgabe</title>
+    <title>Jugend Präsentiert Bewertung</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@1.0.4/css/bulma.min.css">
     <link rel="stylesheet" href="/public/css/style.css">
 </head>
@@ -14,6 +14,19 @@
         <p class="subtitle">Bewertung der Inhalte</p>
     </div>
     </section> 
+
+    <!--Popup modeal-->
+    <div id="Popup" class="modal">
+        <div class="modal-background"></div>
+
+        <div class="modal-content">
+            <div class="box">
+            <p id="PopupText"></p>
+            <!-- Your content -->
+            </div>
+        </div>
+        <button class="modal-close is-large" aria-label="close" ></button>
+    </div>
 
 
     <div class="form box" id="loginContainer">
@@ -36,6 +49,16 @@
     </div>
 
     <div class="disabled" id="bewertungsContainer"> 
+         <video class="form" id="videoPlayer"width="90%" height="240" controls>
+            Your browser does not support the video tag.
+        </video> 
+        <div class="box form" style="width: fit-content;">
+            <p id="Leitfrage"> </p>
+            <p id="year"></p>
+            <p id="Subject"></p>
+            <p id="Duration"></p>
+            <p id="Sources"></p>
+        </div>
         <!--FORM Chapter-->
         <div class="form">
             <div class="field">

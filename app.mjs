@@ -8,6 +8,7 @@ import multer from 'multer';
 import { createClient } from 'webdav';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import { lookup } from 'dns';
 
 // Fix __dirname for ES modules
 const __filename = fileURLToPath(import.meta.url);
@@ -97,20 +98,45 @@ app.post('/getReviewItems', express.text(), async (req, res) => {
 
 
 
-app.post('/getVideo', express.text(), async (req, res) => {
-  const dir = req.body.trim()
+app.post('/getVideoData', express.text(), async (req, res) => {
+  	const dir = req.body.trim()
 
-  try {
-    const data = await webdavClient.getFileContents(`JP Testing/${dir}/data.json`, { format: "text" })
+	try {
+    	const data = await webdavClient.getFileContents(`JP Testing/${dir}/data.json`, { format: "text" })
 
-    res.status(200).json({ data: data});
-  } catch (err) {
-    logger.error(err);
-    res.status(500).json({ error: 'Fehler beim Laden der Videos' });
-  }
+    	res.status(200).json({ data: data});
+  	} catch (err) {
+    	logger.error(err);
+    	res.status(500).json({ error: 'Fehler beim Laden der Videos' });
+  	}
 });
 
 
+
+
+app.post('/getVideo', express.text(), async (req, res) => {
+  	const dir = req.body.trim()
+
+	try {
+		let videoName = ""
+		const videoList = await webdavClient.getDirectoryContents("JP Testing/" + dir)
+		loop: for (let i = 0; i <= videoList.length -1; i++) {
+			if (videoList[i].basename.includes("video")) {
+				videoName = videoList[i].filename
+				break loop
+			}
+		}
+		const video = await webdavClient.getFileContents(videoName)
+		
+	
+		res.setHeader("Content-Type", "video/mp4");
+	 	res.send(video);
+
+	} catch (err) {
+    	logger.error(err);
+    	res.status(500).json({ error: 'Fehler beim Laden der Videos' });
+  	}
+});
 
 
 
@@ -145,7 +171,7 @@ app.post('/upload', uploadMultiple, async (req, res) => {
     console.log(req.files)
     if (req.files.file) {
       await webdavClient.putFileContents(
-        `JP Testing/${dir}/${req.body.filename}`,
+        `JP Testing/${dir}/video.${req.body.filename}`,
         req.files.file[0].buffer
       );
     }
