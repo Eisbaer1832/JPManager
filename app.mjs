@@ -97,30 +97,19 @@ app.post('/getReviewItems', express.text(), async (req, res) => {
 
 
 
-
-app.post('/getVideoData', express.text(), async (req, res) => {
-  	const dir = req.body.trim()
-
-	try {
-    	const data = await webdavClient.getFileContents(`JP Testing/${dir}/data.json`, { format: "text" })
-
-    	res.status(200).json({ data: data});
-  	} catch (err) {
-    	logger.error(err);
-    	res.status(500).json({ error: 'Fehler beim Laden der Videos' });
-  	}
-});
+function getVideo(name) {
+    for (let i = 0; i <= UUIDs.length -1; i++) {
+        if (UUIDs[i].uuid == name) {
+            return  i
+        }
+    }
+}
 
 app.post('/submitReview', express.json(), async (req, res) => {
     const { reviewer, video, rating } = req.body;
     //get Reviewer Type
-    let uuidIndex = -1
-    loop: for (let i = 0; i <= UUIDs.length -1; i++) {
-        if (UUIDs[i].uuid == video) {
-            uuidIndex = i
-            break loop
-        }
-    }
+    let uuidIndex = getVideo(reviewer)
+
     const VideoData = UUIDs[uuidIndex]
 
     //get Video Metadata
@@ -142,6 +131,24 @@ app.post('/submitReview', express.json(), async (req, res) => {
     res.sendStatus(200);
 });
 
+app.post('/getVideoData', express.text(), async (req, res) => {
+  	const dir = req.body.trim()
+    let uuidIndex = getVideo(dir)
+    const VideoData = UUIDs[uuidIndex]
+
+    let reviewType = VideoData.reviewer1.name == reviewer? Fachkompetenzen : reviewType
+    reviewType = VideoData.reviewer2.name == reviewer? Darstellungsvermögen : reviewType
+    reviewType = VideoData.reviewer3.name == reviewer? Adressatenorientierung : reviewType
+
+	try {
+    	const data = await webdavClient.getFileContents(`JP Testing/${dir}/data.json`, { format: "text" })
+
+    	res.status(200).json({ data: data, reviewType: reviewType});
+  	} catch (err) {
+    	logger.error(err);
+    	res.status(500).json({ error: 'Fehler beim Laden der Videos' });
+  	}
+});
 
 app.post('/getVideo', express.text(), async (req, res) => {
   	const dir = req.body.trim()
