@@ -112,13 +112,32 @@ app.post('/getVideoData', express.text(), async (req, res) => {
 });
 
 app.post('/submitReview', express.json(), async (req, res) => {
-    const { reviewerID, video, ratings } = req.body;
-    console.log(reviewerID);
-    console.log(ratings);   
+    const { reviewer, video, rating } = req.body;
+    //get Reviewer Type
+    let uuidIndex = -1
+    loop: for (let i = 0; i <= UUIDs.length -1; i++) {
+        if (UUIDs[i].uuid == video) {
+            uuidIndex = i
+            break loop
+        }
+    }
+    const VideoData = UUIDs[uuidIndex]
 
+    //get Video Metadata
     const data = await webdavClient.getFileContents(`JP Testing/${video}/data.json`, { format: "text" })
-	console.log(data)
-	//TODO Save the data
+    let json = JSON.parse(data)
+    
+    if (VideoData.reviewer1.name == reviewer) {
+        json.Fachkompetenzen = rating
+    }else if (VideoData.reviewer2.name == reviewer) {
+        json.Darstellungsvermögen = rating
+    }else if (VideoData.reviewer3.name == reviewer) {
+        json.Adressatenorientierung = rating
+    }
+    
+	
+    await webdavClient.putFileContents(`JP Testing/${video}/data.json`, JSON.stringify(json, null, 2));
+
 
     res.sendStatus(200);
 });
