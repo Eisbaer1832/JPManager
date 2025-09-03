@@ -70,10 +70,10 @@ function checkForErrors() {
 	passed = isInputEmpty(FirstNameInput) ? false : passed
 	passed = isInputEmpty(LeitfrageInput) ? false : passed
 	passed = isInputEmpty(YearInput) ? false : passed
-	passed = isCheckboxTicked(PresenterVisibleInput, PresenterVisibleHelper) ? true : passed
-	passed = isCheckboxTicked(SourcesCheckInput, SourcesCheckHelper) ? true : passed
+	passed = isCheckboxTicked(PresenterVisibleInput, PresenterVisibleHelper) ? passed : false
+	passed = isCheckboxTicked(SourcesCheckInput, SourcesCheckHelper) ? passed : false
 	passed = isInputEmpty(SourcesInput) ? false : passed
-	passed = isCheckboxTicked(ConsentInput, ConsentHelper) ? true : passed
+	passed = isCheckboxTicked(ConsentInput, ConsentHelper) ? passed : false
 
 	if (SubjectInput.value == "Fachbereich wählen"){
 		SubjectInput.classList.add("is-danger")
@@ -98,6 +98,7 @@ function checkForErrors() {
 
 function submit() {
 	if (checkForErrors()) {
+		console.log("passed")
 		const data = {
 			firstName: FirstNameInput.value,
 			lastName: LastNameInput.value,

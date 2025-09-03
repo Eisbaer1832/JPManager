@@ -7,7 +7,7 @@ const PopupText = document.getElementById("PopupText")
 const videoPlayer = document.getElementById('videoPlayer');
 let rUUID = ""
 let currentVid = ""
-const radioButtons = ["radio1", "radio2","radio3","radio4"]
+const radioButtons = ["radio1", "radio2","radio3","radio4","radio5"]
 
 function login() {
     rUUID = document.getElementById("loginInput").value
@@ -17,66 +17,55 @@ function login() {
     fetchVids(rUUID)
 }
 
-async function fetchVids(reviewerID) {
-    const res = await fetch('/getReviewItems', {
-		method: 'POST',
-        headers: { 'Content-Type': 'text/plain' },
-		body: reviewerID
-	}) 
-    const data = await res.json()
-    console.log(data)
-    data.videos.forEach(element => {
-        $("<div></div>").load("/public/html/videocard.html", function(responseText) {
-            let updatedHtml = responseText
-                .replace(/VideoID/, element)
-                .replace(/FunctionVideoID/, element)
+function showCategorys(type, reviewData) {
+    console.log(type)
+    let savedReviewData = []
+    switch (type){
+        case "Fachkompetenzen":
+            savedReviewData = reviewData.Fachkompetenzen
+            $("#q1").html(`Fragestellung/Hypothese klar konturiert`)
+            $("#q2").html(`Thema/Inhalte gut erarbeitet`)
+            $("#q3").html(`Informationsgehalt angemessen`)
+            $("#q4").html(`Sachlich richtig`)
+            $("#q5").parent().addClass("disabled")
+            break
+        case "Darstellungsvermögen":
+            savedReviewData = reviewData.Darstellungsvermögen
+            $("#q1").html(`Argumentation nachvollziehbar`)
+            $("#q2").html(`Aussagen anschaulich (Beispiele, Vergleiche, sprachliche Bilder)`)
+            $("#q3").html(`Aufbau funktional (Einleitung, Hauptteil, Schluss, roter Faden)`)
+            $("#q4").html(`Medieneinsatz funktional`)
+            $("#q5").html(`Performanz (Körpersprache und Stimme) unterstützt die Präsentation`)
+            $("#q5").parent().removeClass("disabled")
+            break
+        case "Adressatenorientierung":
+            savedReviewData = reviewData.Adressatenorientierung
+            $("#q1").html(`Vorwissen der Zuhörer berücksichtigt`)
+            $("#q2").html(`Bezug zum Publikum hergestellt`)
+            $("#q3").html(`Zeitmanagement überzeugend`)
+            $("#q4").html(`Raumsituation berücksichtigt`)
+            $("#q5").parent().addClass("disabled")
+            break
+    }   
+    console.log(savedReviewData)
 
+    if (savedReviewData == undefined) return 0
+    radioButtons.forEach((radio, index) => { 
+        const container = document.getElementById(radio);
+        const buttons = container.querySelectorAll('.buttons .button');
 
-        
-            $(this).html(updatedHtml);
-            $("#insertList").append($(this));
-        });
+        for (let i = 0; i <= buttons.length -1; i++) {
+            if (buttons[i].innerHTML == savedReviewData[index]) {
+                console.log(buttons[i].innerHTML +  savedReviewData[index])
+                buttons[0].classList.remove('is-selected', "is-success")
+                buttons[i].classList.add('is-selected', "is-success")
+            }
+        }
     })
-}
-
-
-async function fetchReviewData(VideoID) {
-    currentVid = VideoID
-    Popup.classList.add("is-active")
-    PopupText.innerHTML = "Video wird geladen"
-
-
-    const resVidData = await fetch('/getVideoData', {
-		method: 'POST',
-        headers: { 'Content-Type': 'text/plain' },
-		body: VideoID
-	})
-    let data = await resVidData.json()
-
-
-    const resVid = await fetch('/getVideo', {
-		method: 'POST',
-        headers: { 'Content-Type': 'text/plain' },
-		body: VideoID
-	})
-    const vid = await resVid.blob()
-    const videoURL = URL.createObjectURL(vid);
-    videoPlayer.src = videoURL;
-    videoPlayer.play();
-
-    data = JSON.parse(data.data)
-    
-    if (data.error == undefined) {
-        Popup.classList.remove("is-active")
-        listContainer.classList.add("disabled")
-        bewertungsContainer.classList.remove("disabled")
-        showData(data)
-    }else{
-        PopupText.innerHTML = "<p class='has-text-danger'> Fehler beim Laden des Videos <p>"
-    }
-    console.log(data, data.video)
 
 }
+
+
 
 function showData(data, video) {
     console.log(video)
@@ -93,14 +82,16 @@ function radioButton(id) {
 
     buttons.forEach(button => {
         button.addEventListener('click', () => {
-            // Remove 'is-selected' from all buttons in this container
             buttons.forEach(btn => btn.classList.remove('is-selected', "is-success"));
-            // Add 'is-selected' to the clicked button
             button.classList.add('is-selected', "is-success");
         });
     });
 }
+
 async function submit() {
+    Popup.classList.add("is-active")
+    PopupText.innerHTML = "Bewertung wird versendet!"
+
     values = []
     
     radioButtons.forEach(group => { 
@@ -123,8 +114,20 @@ async function submit() {
         headers: { 'Content-Type': 'application/json' },
 		body: JSON.stringify(review)
 	}) 
+    if (res.status == 200) {
+        PopupText.innerHTML = "<p class='has-text-success'>Bewertung wurde erfolgreich abgegeben!<p> \n Du Wirst in kürze auf die Startseite weitegeleitet!"
+        await delay(3000);
+        Popup.classList.remove("is-active")
+        listContainer.classList.remove("disabled")
+        bewertungsContainer.classList.add("disabled")
+        fetchVids(rUUID)
+    }else {
+        PopupText.innerHTML = "Fehler bei der Datenübertragung. Bitte lade die Seite neu und versuche es ernaut!"
+
+    }
 }
 
 radioButtons.forEach(group => { 
     radioButton(group)
 })
+const delay = ms => new Promise(res => setTimeout(res, ms));

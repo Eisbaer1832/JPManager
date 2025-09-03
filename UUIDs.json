@@ -8,18 +8,18 @@
       },
       "reviewer2": {
         "name": "ben",
-        "done": false
+        "done": true
       },
       "reviewer3": {
-        "name": "greta",
+        "name": "fridolin",
         "done": false
       }
     },
     {
-      "uuid": 168822,
+      "uuid": 341087,
       "reviewer1": {
         "name": "ben",
-        "done": false
+        "done": true
       },
       "reviewer2": {
         "name": "david",
@@ -27,51 +27,6 @@
       },
       "reviewer3": {
         "name": "greta",
-        "done": false
-      }
-    },
-    {
-      "uuid": 146799,
-      "reviewer1": {
-        "name": "greta",
-        "done": false
-      },
-      "reviewer2": {
-        "name": "carla",
-        "done": false
-      },
-      "reviewer3": {
-        "name": "anna",
-        "done": false
-      }
-    },
-    {
-      "uuid": 351193,
-      "reviewer1": {
-        "name": "carla",
-        "done": false
-      },
-      "reviewer2": {
-        "name": "felix",
-        "done": false
-      },
-      "reviewer3": {
-        "name": "eva",
-        "done": false
-      }
-    },
-    {
-      "uuid": 255128,
-      "reviewer1": {
-        "name": "ben",
-        "done": false
-      },
-      "reviewer2": {
-        "name": "carla",
-        "done": false
-      },
-      "reviewer3": {
-        "name": "felix",
         "done": false
       }
     }

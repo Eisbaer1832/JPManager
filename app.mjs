@@ -77,18 +77,23 @@ app.post('/getReviewItems', express.text(), async (req, res) => {
   UUIDs = JSON.parse(fs.readFileSync('UUIDs.json', 'utf8')).videos;
 
   try {
-    console.log(req.body.trim())
     let show = []
+	let done = []
 
     for (let i = 0; i < UUIDs.length; i++) {
-      console.log(UUIDs[i])
-        if (UUIDs[i].reviewer1.name == req.body|| UUIDs[i].reviewer2.name == req.body|| UUIDs[i].reviewer3.name == req.body) {
-            console.log("can see" + UUIDs[i].uuid)
+        if (UUIDs[i].reviewer1.name == req.body) {
+			show.push(UUIDs[i].uuid)
+			done.push(UUIDs[i].reviewer1.done)
+		}else if (UUIDs[i].reviewer2.name == req.body) {
+			show.push(UUIDs[i].uuid)
+			done.push(UUIDs[i].reviewer2.done)
+		}else if (UUIDs[i].reviewer3.name == req.body) {
             show.push(UUIDs[i].uuid)
+			done.push(UUIDs[i].reviewer3.done)
         }
     }
 
-    res.status(200).json({ videos: show});
+    res.status(200).json({ videos: show, done: done});
   } catch (err) {
     logger.error(err);
     res.status(500).json({ error: 'Fehler beim Upload' });
@@ -107,41 +112,50 @@ function getVideo(name) {
 
 app.post('/submitReview', express.json(), async (req, res) => {
     const { reviewer, video, rating } = req.body;
-    //get Reviewer Type
-    let uuidIndex = getVideo(reviewer)
+    UUIDs = JSON.parse(fs.readFileSync('UUIDs.json', 'utf8')).videos;
+    let uuidIndex = getVideo(video)
 
     const VideoData = UUIDs[uuidIndex]
 
     //get Video Metadata
     const data = await webdavClient.getFileContents(`JP Testing/${video}/data.json`, { format: "text" })
     let json = JSON.parse(data)
-    
+
+	console.log(UUIDs[uuidIndex])
     if (VideoData.reviewer1.name == reviewer) {
         json.Fachkompetenzen = rating
+		UUIDs[uuidIndex].reviewer1.done = true
     }else if (VideoData.reviewer2.name == reviewer) {
         json.Darstellungsvermögen = rating
+		UUIDs[uuidIndex].reviewer2.done = true
     }else if (VideoData.reviewer3.name == reviewer) {
         json.Adressatenorientierung = rating
+		UUIDs[uuidIndex].reviewer3.done = true
     }
     
 	
     await webdavClient.putFileContents(`JP Testing/${video}/data.json`, JSON.stringify(json, null, 2));
 
 
+    const jsonData = JSON.stringify({ videos: UUIDs }, null, 2);
+    fs.writeFileSync('UUIDs.json', jsonData, 'utf8');
+
     res.sendStatus(200);
 });
 
-app.post('/getVideoData', express.text(), async (req, res) => {
-  	const dir = req.body.trim()
-    let uuidIndex = getVideo(dir)
+app.post('/getVideoData', express.json(), async (req, res) => {
+    const { VideoID, reviewer } = req.body;
+	
+    let uuidIndex = getVideo(VideoID)
     const VideoData = UUIDs[uuidIndex]
 
-    let reviewType = VideoData.reviewer1.name == reviewer? Fachkompetenzen : reviewType
-    reviewType = VideoData.reviewer2.name == reviewer? Darstellungsvermögen : reviewType
-    reviewType = VideoData.reviewer3.name == reviewer? Adressatenorientierung : reviewType
+    let reviewType = ""
+	reviewType = VideoData.reviewer1.name == reviewer? "Fachkompetenzen" : reviewType
+    reviewType = VideoData.reviewer2.name == reviewer? "Darstellungsvermögen" : reviewType
+    reviewType = VideoData.reviewer3.name == reviewer? "Adressatenorientierung" : reviewType
 
 	try {
-    	const data = await webdavClient.getFileContents(`JP Testing/${dir}/data.json`, { format: "text" })
+    	const data = await webdavClient.getFileContents(`JP Testing/${VideoID}/data.json`, { format: "text" })
 
     	res.status(200).json({ data: data, reviewType: reviewType});
   	} catch (err) {
@@ -204,7 +218,6 @@ app.post('/upload', uploadMultiple, async (req, res) => {
     fs.writeFileSync('UUIDs.json', jsonData, 'utf8');
 
     await webdavClient.createDirectory(`JP Testing/${dir}`, { recursive: true });
-    console.log(req.files)
     if (req.files.file) {
       await webdavClient.putFileContents(
         `JP Testing/${dir}/video.${req.body.filename}`,
