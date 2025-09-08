@@ -115,7 +115,7 @@ async function submit() {
 		body: JSON.stringify(review)
 	}) 
     if (res.status == 200) {
-        PopupText.innerHTML = "<p class='has-text-success'>Bewertung wurde erfolgreich abgegeben!<p> \n Du Wirst in kürze auf die Startseite weitegeleitet!"
+        PopupText.innerHTML = "<p class='has-text-success'>Bewertung wurde erfolgreich abgegeben!<p> \n Du Wirst in Kürze auf die Startseite weitegeleitet!"
         await delay(3000);
         Popup.classList.remove("is-active")
         listContainer.classList.remove("disabled")

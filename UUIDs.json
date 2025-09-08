@@ -4,7 +4,7 @@
       "uuid": 303253,
       "reviewer1": {
         "name": "carla",
-        "done": false
+        "done": true
       },
       "reviewer2": {
         "name": "ben",
