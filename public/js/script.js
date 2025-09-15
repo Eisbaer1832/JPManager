@@ -37,7 +37,17 @@ $(document).ready(function(){
 	});
 });
 
+function showVid() {
+	const videoPlayer = document.getElementById('videoPlayer');
+	videoPlayer.classList.remove("disabled")
+	var source = document.createElement('source')
+	videoPlayer.replaceChildren();
+	source.src = URL.createObjectURL(VideoUploadInput.files[0]);
 
+	videoPlayer.replaceChildren(source);
+	videoPlayer.play();
+
+}
 function isInputEmpty(input) {
 	if (input.value.trim().length == 0) {
 		input.classList.add("is-danger")

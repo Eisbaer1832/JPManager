@@ -32,6 +32,20 @@
 
     <!--FORM Chapter-->
     <div class="form">
+         <video class="form disabled" id="videoPlayer"width="90%" height="240" controls>
+            Your browser does not support the video tag.
+        </video> 
+ 
+        <div class="field ">
+            <label class="label">Video</label>
+            <div class="control">
+                <input id="VideoUploadInput" onclick="showVid()" accept="video/*" type="file" id="input" multiple />            
+            </div>
+            <p id="VideoUploadHelper" class="is-hidden"><strong  class="help is-danger"> Bitte lade ein Video hoch!</strong></p>
+
+        </div>
+
+
         <div class="field">
             <label class="label">Vorname</label>
             <div class="control">
@@ -113,16 +127,6 @@
                 <textarea id="SourcesInput" class="textarea" placeholder="Liste aller verwendeten Quellen"></textarea>
             </div>
         </div>
-
-        <div class="field ">
-            <label class="label">Video</label>
-            <div class="control">
-                <input id="VideoUploadInput" accept="video/*" type="file" id="input" multiple />            
-            </div>
-            <p id="VideoUploadHelper" class="is-hidden"><strong  class="help is-danger"> Bitte lade ein Video hoch!</strong></p>
-
-        </div>
-
 
         <div class="field is-grouped">
             <div class="control">
