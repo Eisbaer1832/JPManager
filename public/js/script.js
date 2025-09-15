@@ -12,8 +12,6 @@ const SourcesCheckHelper = document.getElementById("SourcesCheckHelper")
 const SourcesInput = document.getElementById("SourcesInput")
 const VideoUploadInput = document.getElementById("VideoUploadInput")
 const VideoUploadHelper = document.getElementById("VideoUploadHelper")
-const ConsentInput = document.getElementById("ConsentInput")
-const ConsentHelper = document.getElementById("ConsentHelper")
 
 const Popup = document.getElementById("Popup")
 const PopupText = document.getElementById("PopupText")
@@ -73,7 +71,6 @@ function checkForErrors() {
 	passed = isCheckboxTicked(PresenterVisibleInput, PresenterVisibleHelper) ? passed : false
 	passed = isCheckboxTicked(SourcesCheckInput, SourcesCheckHelper) ? passed : false
 	passed = isInputEmpty(SourcesInput) ? false : passed
-	passed = isCheckboxTicked(ConsentInput, ConsentHelper) ? passed : false
 
 	if (SubjectInput.value == "Fachbereich wählen"){
 		SubjectInput.classList.add("is-danger")

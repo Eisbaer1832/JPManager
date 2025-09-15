@@ -1,0 +1,12 @@
+{
+  "dependencies": {
+    "config": "^4.1.1",
+    "express": "^5.1.0",
+    "jquery": "^3.7.1",
+    "multer": "^2.0.2",
+    "pino": "^9.9.5",
+    "pino-pretty": "^13.1.1",
+    "serve-favicon": "^2.5.1",
+    "webdav": "^5.8.0"
+  }
+}
