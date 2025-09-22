@@ -24,7 +24,7 @@ function checkForErrors() {
 	passed = isInputEmpty(LastNameInput) ? false : passed
 	passed = isInputEmpty(FirstNameInput) ? false : passed
 
-	if (SubjectInput1.value == "Fachbereich wählen"){
+	if (SubjectInput1.value === "Fachbereich wählen"){
 		SubjectInput1.classList.add("is-danger")
 		SubjectInput1.classList.remove("is-success")
 		passed = false
@@ -33,30 +33,15 @@ function checkForErrors() {
 		SubjectInput1.classList.add("is-sucess")
 	}
     
-    if (SubjectInput2.value == "Fachbereich wählen"){
-		SubjectInput2.classList.add("is-danger")
-		SubjectInput2.classList.remove("is-success")
-		passed = false
-	}else {
-		SubjectInput2.classList.remove("is-danger")
-		SubjectInput2.classList.add("is-sucess")
-	}
 
-    if (SubjectInput3.value == "Fachbereich wählen"){
-		SubjectInput3.classList.add("is-danger")
-		SubjectInput3.classList.remove("is-success")
-		passed = false
-	}else {
-		SubjectInput3.classList.remove("is-danger")
-		SubjectInput3.classList.add("is-sucess")
-	}
 	return passed
 }
 
 
 async function sendLehrerAnmeldung(data) {
     Popup.classList.add("is-active")
-    PopupText.innerHTML = "<p class='has-text-info'> Video wird hochgeladen...<p> <p class='has-text-danger'>Schließe dieses Fenster nicht!<p>"
+    PopupText.innerHTML = "<p > Du wirst angemeldet <p> <p class='has-text-danger'>Schließe dieses Fenster nicht!<p>"
+
 
 
 	const res = await fetch('/LehrerAnmeldung', {
@@ -64,10 +49,10 @@ async function sendLehrerAnmeldung(data) {
         headers: { 'Content-Type': 'application/json' },
 		body: JSON.stringify(data),
 	});
-	if (res.error == undefined) {
-        PopupText.innerHTML = "<p class='has-text-success'> Dein Video wurde erfolgreich abgegeben. Du kannst diesen Tab jetzt schließen! <p>"
+	if (res.error === undefined) {
+        PopupText.innerHTML = "<p class='has-text-success'> Du bist erfolgreich registriert! Du kannst dieses Fenster nun schließen! <p>"
     }else{
-        PopupText.innerHTML = "<p class='has-text-danger'> Fehler beim Hochladen des Videos, lade die Seite neu und vesuche es noch einmal!<p>"
+        PopupText.innerHTML = "<p class='has-text-danger'> Fehler bei der Anmeldung!<p>"
     }
 	console.log(await res)
 }
@@ -76,12 +61,21 @@ async function sendLehrerAnmeldung(data) {
 function submit() {
     if (checkForErrors()) {
 		console.log("passed")
+        let subjects = []
+        if (SubjectInput1.value !== "---") {
+            subjects.push(SubjectInput1.value)
+        }
+        if (SubjectInput2.value !== "---") {
+            subjects.push(SubjectInput2.value)
+        }
+        if (SubjectInput3.value !== "---") {
+            subjects.push(SubjectInput3.value)
+        }
+
 		const data = {
 			firstName: FirstNameInput.value,
 			lastName: LastNameInput.value,
-			subject1: SubjectInput1.value,
-            subject2: SubjectInput2.value,
-            subject3: SubjectInput3.value,
+            subjects: subjects
 		};
 
 		sendLehrerAnmeldung(data)

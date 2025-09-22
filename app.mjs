@@ -241,19 +241,10 @@ app.post('/upload', uploadMultiple, async (req, res) => {
 });
 
 
-
-//TODO zeug speichern
 app.post('/LehrerAnmeldung', express.json(), async (req, res) => {
-    reviewer = JSON.parse(fs.readFileSync('UUIDs.json', 'utf8')).reviewer;
-    let json = JSON.parse(req.body)
-
-    reviewer.push(json)    
-	
-    await webdavClient.putFileContents(`JP/${video}/data.json`, JSON.stringify(json, null, 2));
-
-
-    const jsonData = JSON.stringify({ videos: UUIDs }, null, 2);
-    fs.writeFileSync('UUIDs.json', jsonData, 'utf8');
-
+    let jsonFile = JSON.parse(fs.readFileSync('UUIDs.json', 'utf8'));
+    console.log(req.body)
+    jsonFile.reviewers.push(req.body);
+    fs.writeFileSync('UUIDs.json', JSON.stringify(jsonFile, null, 2), 'utf8');
     res.sendStatus(200);
 });
