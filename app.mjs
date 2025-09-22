@@ -27,7 +27,7 @@ const logger = pino({
   }
 })
 
-UUIDs = JSON.parse(fs.readFileSync('UUIDs.videos.json', 'utf8')).videos;
+UUIDs = JSON.parse(fs.readFileSync('UUIDs.json', 'utf8'));
 logger.info(UUIDs.videos)
 
 
@@ -140,7 +140,7 @@ app.post('/submitReview', express.json(), async (req, res) => {
 
 
     const jsonData = JSON.stringify({ videos: UUIDs.videos }, null, 2);
-    fs.writeFileSync('UUIDs.videos.json', jsonData, 'utf8');
+    fs.writeFileSync('UUIDs.json', jsonData, 'utf8');
 
     res.sendStatus(200);
 });
@@ -217,7 +217,7 @@ app.post('/upload', uploadMultiple, async (req, res) => {
 
     UUIDs.videos.push(newVideo);
     const jsonData = JSON.stringify({ videos: UUIDs.videos }, null, 2);
-    fs.writeFileSync('UUIDs.videos.json', jsonData, 'utf8');
+    fs.writeFileSync('UUIDs.json', jsonData, 'utf8');
 
     await webdavClient.createDirectory(`JP/${dir}`, { recursive: true });
     if (req.files.file) {
@@ -242,9 +242,9 @@ app.post('/upload', uploadMultiple, async (req, res) => {
 
 
 app.post('/LehrerAnmeldung', express.json(), async (req, res) => {
-    let jsonFile = JSON.parse(fs.readFileSync('UUIDs.videos.json', 'utf8'));
+    let jsonFile = JSON.parse(fs.readFileSync('Reviewers.json', 'utf8'));
     console.log(req.body)
     jsonFile.reviewers.push(req.body);
-    fs.writeFileSync('UUIDs.videos.json', JSON.stringify(jsonFile, null, 2), 'utf8');
+    fs.writeFileSync('Reviewers.json', JSON.stringify(jsonFile, null, 2), 'utf8');
     res.sendStatus(200);
 });

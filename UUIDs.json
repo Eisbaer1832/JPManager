@@ -1,37 +1,37 @@
 {
   "videos": [
     {
-      "uuid": 755735,
+      "uuid": 547915,
       "reviewer1": {
+        "name": "felix",
+        "done": false
+      },
+      "reviewer2": {
+        "name": "greta",
+        "done": false
+      },
+      "reviewer3": {
         "name": "carla",
-        "done": true
-      },
-      "reviewer2": {
-        "name": "felix",
-        "done": false
-      },
-      "reviewer3": {
-        "name": "david",
         "done": false
       }
     },
     {
-      "uuid": 202425,
+      "uuid": 127379,
       "reviewer1": {
-        "name": "david",
+        "name": "eva",
         "done": false
       },
       "reviewer2": {
-        "name": "felix",
+        "name": "david",
         "done": false
       },
       "reviewer3": {
-        "name": "greta",
+        "name": "anna",
         "done": false
       }
     },
     {
-      "uuid": 348318,
+      "uuid": 446865,
       "reviewer1": {
         "name": "felix",
         "done": false
@@ -41,114 +41,9 @@
         "done": false
       },
       "reviewer3": {
-        "name": "david",
+        "name": "ben",
         "done": false
       }
-    }
-  ],
-  "reviewers": [
-    {
-      "firstName": "Tino",
-      "lastName": "Brinker",
-      "subject1": "Informatik",
-      "subject2": "---",
-      "subject3": "---"
-    },
-    {
-      "firstName": "Capputino",
-      "lastName": "der Bebopsige",
-      "subject1": "Biologie",
-      "subject2": "Informatik",
-      "subject3": "Mathematik"
-    },
-    {
-      "firstName": "Capputino",
-      "lastName": "der Capputinoige",
-      "subjects": [
-        "Informatik",
-        "---",
-        "---"
-      ]
-    },
-    {
-      "firstName": "Capputino",
-      "lastName": "der Bebopsige",
-      "subjects": [
-        {
-          "0": {},
-          "1": {},
-          "2": {},
-          "3": {},
-          "4": {},
-          "5": {}
-        },
-        {
-          "0": {},
-          "1": {},
-          "2": {},
-          "3": {},
-          "4": {},
-          "5": {}
-        },
-        {
-          "0": {},
-          "1": {},
-          "2": {},
-          "3": {},
-          "4": {},
-          "5": {}
-        }
-      ]
-    },
-    {
-      "firstName": "Capputino",
-      "lastName": "der Bebopsige",
-      "subjects": [
-        "Biologie",
-        "Biologie",
-        "Biologie"
-      ]
-    },
-    {
-      "firstName": "Capputino",
-      "lastName": "der Bebopsige",
-      "subjects": [
-        "Biologie",
-        "Informatik",
-        "Mathematik"
-      ]
-    },
-    {
-      "firstName": "Capputino",
-      "lastName": "der Bebopsige",
-      "subjects": [
-        "Biologie",
-        "Informatik"
-      ]
-    },
-    {
-      "firstName": "Capputino",
-      "lastName": "der Bebopsige",
-      "subjects": [
-        "Biologie",
-        "Informatik"
-      ]
-    },
-    {
-      "firstName": "Capputino",
-      "lastName": "der Bebopsige",
-      "subjects": [
-        "Biologie",
-        "Informatik"
-      ]
-    },
-    {
-      "firstName": "Capputino",
-      "lastName": "der Bebopsige",
-      "subjects": [
-        "Biologie",
-        "Informatik"
-      ]
     }
   ]
 }
