@@ -27,7 +27,7 @@ const logger = pino({
   }
 })
 
-UUIDs.videos = JSON.parse(fs.readFileSync('UUIDs.videos.json', 'utf8')).videos;
+UUIDs = JSON.parse(fs.readFileSync('UUIDs.videos.json', 'utf8')).videos;
 logger.info(UUIDs.videos)
 
 
