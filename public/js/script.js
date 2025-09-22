@@ -91,7 +91,6 @@ function checkForErrors() {
 		VideoUploadHelper.classList.add("is-hidden")
 	}
 
-	passed = durationOkay ? passed : false
 	return passed
 }
 

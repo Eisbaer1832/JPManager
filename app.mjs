@@ -54,6 +54,8 @@ const upload = multer({ storage: multer.memoryStorage() });
 app.use('/public',express.static('public'));
 //app.use(favicon(__dirname + '/public/assets/favicon.ico'));
 app.get('/', (_, res) => {res.sendFile('/public/html/Abgabe.html', {root: __dirname })});
+app.get('/LehrerAnmeldung', (_, res) => {res.sendFile('/public/html/Anmeldung.html', {root: __dirname })});
+
 app.get('/bewertung', (_, res) => {res.sendFile('/public/html/Bewertung.html', {root: __dirname })});
 
 app.listen(port, () => {logger.info(`App listening on port ${port}!`)});
@@ -118,7 +120,7 @@ app.post('/submitReview', express.json(), async (req, res) => {
     const VideoData = UUIDs[uuidIndex]
 
     //get Video Metadata
-    const data = await webdavClient.getFileContents(`JP Testing/${video}/data.json`, { format: "text" })
+    const data = await webdavClient.getFileContents(`JP/${video}/data.json`, { format: "text" })
     let json = JSON.parse(data)
 
 	console.log(UUIDs[uuidIndex])
@@ -134,7 +136,7 @@ app.post('/submitReview', express.json(), async (req, res) => {
     }
     
 	
-    await webdavClient.putFileContents(`JP Testing/${video}/data.json`, JSON.stringify(json, null, 2));
+    await webdavClient.putFileContents(`JP/${video}/data.json`, JSON.stringify(json, null, 2));
 
 
     const jsonData = JSON.stringify({ videos: UUIDs }, null, 2);
@@ -155,7 +157,7 @@ app.post('/getVideoData', express.json(), async (req, res) => {
     reviewType = VideoData.reviewer3.name == reviewer? "Adressatenorientierung" : reviewType
 
 	try {
-    	const data = await webdavClient.getFileContents(`JP Testing/${VideoID}/data.json`, { format: "text" })
+    	const data = await webdavClient.getFileContents(`JP/${VideoID}/data.json`, { format: "text" })
 
     	res.status(200).json({ data: data, reviewType: reviewType});
   	} catch (err) {
@@ -169,7 +171,7 @@ app.post('/getVideo', express.text(), async (req, res) => {
 
 	try {
 		let videoName = ""
-		const videoList = await webdavClient.getDirectoryContents("JP Testing/" + dir)
+		const videoList = await webdavClient.getDirectoryContents("JP/" + dir)
 		loop: for (let i = 0; i <= videoList.length -1; i++) {
 			if (videoList[i].basename.includes("video")) {
 				videoName = videoList[i].filename
@@ -217,16 +219,16 @@ app.post('/upload', uploadMultiple, async (req, res) => {
     const jsonData = JSON.stringify({ videos: UUIDs }, null, 2);
     fs.writeFileSync('UUIDs.json', jsonData, 'utf8');
 
-    await webdavClient.createDirectory(`JP Testing/${dir}`, { recursive: true });
+    await webdavClient.createDirectory(`JP/${dir}`, { recursive: true });
     if (req.files.file) {
       await webdavClient.putFileContents(
-        `JP Testing/${dir}/video.${req.body.filename}`,
+        `JP/${dir}/video.${req.body.filename}`,
         req.files.file[0].buffer
       );
     }
     if (req.files.data) {
       await webdavClient.putFileContents(
-        `JP Testing/${dir}/data.json`,
+        `JP/${dir}/data.json`,
         req.files.data[0].buffer
       );
     }
@@ -236,4 +238,22 @@ app.post('/upload', uploadMultiple, async (req, res) => {
     logger.error(err);
     res.status(500).json({ error: 'Fehler beim Upload' });
   }
+});
+
+
+
+//TODO zeug speichern
+app.post('/LehrerAnmeldung', express.json(), async (req, res) => {
+    reviewer = JSON.parse(fs.readFileSync('UUIDs.json', 'utf8')).reviewer;
+    let json = JSON.parse(req.body)
+
+    reviewer.push(json)    
+	
+    await webdavClient.putFileContents(`JP/${video}/data.json`, JSON.stringify(json, null, 2));
+
+
+    const jsonData = JSON.stringify({ videos: UUIDs }, null, 2);
+    fs.writeFileSync('UUIDs.json', jsonData, 'utf8');
+
+    res.sendStatus(200);
 });

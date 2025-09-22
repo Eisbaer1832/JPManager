@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jugend Präsentiert Bewertung</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@1.0.4/css/bulma.min.css">
+    <link rel="stylesheet" href="/public/css/style.css">
+</head>
+<body>
+    <section class="hero">
+    <div class="hero-body">
+        <p class="title">TGG Jugend Präsentiert Schulwettbewerb</p>
+        <p class="subtitle">Lehrer Anmeldung</p>
+    </div>
+    </section> 
+
+        <!--Popup modeal-->
+        <div id="Popup" class="modal">
+            <div class="modal-background"></div>
+
+            <div class="modal-content">
+                <div class="box">
+                <p id="PopupText"></p>
+                </div>
+            </div>
+            <button class="modal-close is-large" aria-label="close" ></button>
+        </div>
+        
+        <div class="form">
+            <div class="field">
+                <label class="label">Vorname</label>
+                <div class="control">
+                    <input id="FirstNameInput" class="input" type="text" placeholder="Vorname">
+                </div>
+            </div>
+
+            <div class="field">
+                <label class="label">Nachname</label>
+                <div class="control">
+                    <input id="LastNameInput" class="input" type="text" placeholder="Nachname">
+                </div>
+            </div>
+            <div class="field">
+                <label class="label">Fachbereich 1</label>
+                <div class="control">
+                    <div class="select">
+                    <select id="SubjectInput" class="input">
+                        <option>Fachbereich wählen</option>
+                        <option>Informatik</option>
+                        <option>Biologie</option>
+                        <option>Chemie</option>
+                        <option>Physik</option>
+                        <option>Mathematik</option>
+                    </select>
+                    </div>
+                </div>
+            </div>
+            <div class="field">
+                <label class="label">Fachbereich 2</label>
+                <div class="control">
+                    <div class="select">
+                    <select id="SubjectInput2" class="input">
+                        <option>---</option>
+                        <option>Informatik</option>
+                        <option>Biologie</option>
+                        <option>Chemie</option>
+                        <option>Physik</option>
+                        <option>Mathematik</option>
+                    </select>
+                    </div>
+                </div>
+            </div>
+            <div class="field">
+                <label class="label">Fachbereich 3</label>
+                <div class="control">
+                    <div class="select">
+                    <select id="SubjectInput3" class="input">
+                        <option>---</option>
+                        <option>Informatik</option>
+                        <option>Biologie</option>
+                        <option>Chemie</option>
+                        <option>Physik</option>
+                        <option>Mathematik</option>
+                    </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="form field is-grouped">
+            <div class="control">
+                <button class="button is-link" onclick="submit()">Abgeben</button>
+            </div>
+        </div>
+    </div>
+</body>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="/public/js/ReviewRoutes.js"></script>
+    <script src="/public/js/Anmeldung.js"></script>
+</html>

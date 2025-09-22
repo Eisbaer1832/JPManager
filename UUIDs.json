@@ -29,6 +29,22 @@
         "name": "greta",
         "done": false
       }
+    },
+    {
+      "uuid": 348318,
+      "reviewer1": {
+        "name": "felix",
+        "done": false
+      },
+      "reviewer2": {
+        "name": "greta",
+        "done": false
+      },
+      "reviewer3": {
+        "name": "david",
+        "done": false
+      }
     }
-  ]
+  ],
+  "reviewers" : []
 }
