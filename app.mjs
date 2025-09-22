@@ -27,8 +27,8 @@ const logger = pino({
   }
 })
 
-UUIDs = JSON.parse(fs.readFileSync('UUIDs.json', 'utf8')).videos;
-logger.info(UUIDs)
+UUIDs.videos = JSON.parse(fs.readFileSync('UUIDs.videos.json', 'utf8')).videos;
+logger.info(UUIDs.videos)
 
 
 // config
@@ -76,22 +76,22 @@ const uploadMultiple = multer({ storage: multer.memoryStorage() }).fields([
 
 
 app.post('/getReviewItems', express.text(), async (req, res) => {
-  UUIDs = JSON.parse(fs.readFileSync('UUIDs.json', 'utf8')).videos;
+  UUIDs = JSON.parse(fs.readFileSync('UUIDs.videos.json', 'utf8'));
 
   try {
     let show = []
 	let done = []
 
-    for (let i = 0; i < UUIDs.length; i++) {
-        if (UUIDs[i].reviewer1.name == req.body) {
-			show.push(UUIDs[i].uuid)
-			done.push(UUIDs[i].reviewer1.done)
-		}else if (UUIDs[i].reviewer2.name == req.body) {
-			show.push(UUIDs[i].uuid)
-			done.push(UUIDs[i].reviewer2.done)
-		}else if (UUIDs[i].reviewer3.name == req.body) {
-            show.push(UUIDs[i].uuid)
-			done.push(UUIDs[i].reviewer3.done)
+    for (let i = 0; i < UUIDs.videos.length; i++) {
+        if (UUIDs.videos[i].reviewer1.name == req.body) {
+			show.push(UUIDs.videos[i].uuid)
+			done.push(UUIDs.videos[i].reviewer1.done)
+		}else if (UUIDs.videos[i].reviewer2.name == req.body) {
+			show.push(UUIDs.videos[i].uuid)
+			done.push(UUIDs.videos[i].reviewer2.done)
+		}else if (UUIDs.videos[i].reviewer3.name == req.body) {
+            show.push(UUIDs.videos[i].uuid)
+			done.push(UUIDs.videos[i].reviewer3.done)
         }
     }
 
@@ -105,8 +105,8 @@ app.post('/getReviewItems', express.text(), async (req, res) => {
 
 
 function getVideo(name) {
-    for (let i = 0; i <= UUIDs.length -1; i++) {
-        if (UUIDs[i].uuid == name) {
+    for (let i = 0; i <= UUIDs.videos.length -1; i++) {
+        if (UUIDs.videos[i].uuid == name) {
             return  i
         }
     }
@@ -114,33 +114,33 @@ function getVideo(name) {
 
 app.post('/submitReview', express.json(), async (req, res) => {
     const { reviewer, video, rating } = req.body;
-    UUIDs = JSON.parse(fs.readFileSync('UUIDs.json', 'utf8')).videos;
+    UUIDs = JSON.parse(fs.readFileSync('UUIDs.videos.json', 'utf8'));
     let uuidIndex = getVideo(video)
 
-    const VideoData = UUIDs[uuidIndex]
+    const VideoData = UUIDs.videos.videos[uuidIndex]
 
     //get Video Metadata
     const data = await webdavClient.getFileContents(`JP/${video}/data.json`, { format: "text" })
     let json = JSON.parse(data)
 
-	console.log(UUIDs[uuidIndex])
+	console.log(UUIDs.videos.videos[uuidIndex])
     if (VideoData.reviewer1.name == reviewer) {
         json.Fachkompetenzen = rating
-		UUIDs[uuidIndex].reviewer1.done = true
+		UUIDs.videos.videos[uuidIndex].reviewer1.done = true
     }else if (VideoData.reviewer2.name == reviewer) {
         json.Darstellungsvermögen = rating
-		UUIDs[uuidIndex].reviewer2.done = true
+		UUIDs.videos.videos[uuidIndex].reviewer2.done = true
     }else if (VideoData.reviewer3.name == reviewer) {
         json.Adressatenorientierung = rating
-		UUIDs[uuidIndex].reviewer3.done = true
+		UUIDs.videos.videos[uuidIndex].reviewer3.done = true
     }
     
 	
     await webdavClient.putFileContents(`JP/${video}/data.json`, JSON.stringify(json, null, 2));
 
 
-    const jsonData = JSON.stringify({ videos: UUIDs }, null, 2);
-    fs.writeFileSync('UUIDs.json', jsonData, 'utf8');
+    const jsonData = JSON.stringify({ videos: UUIDs.videos }, null, 2);
+    fs.writeFileSync('UUIDs.videos.json', jsonData, 'utf8');
 
     res.sendStatus(200);
 });
@@ -149,7 +149,7 @@ app.post('/getVideoData', express.json(), async (req, res) => {
     const { VideoID, reviewer } = req.body;
 	
     let uuidIndex = getVideo(VideoID)
-    const VideoData = UUIDs[uuidIndex]
+    const VideoData = UUIDs.videos[uuidIndex]
 
     let reviewType = ""
 	reviewType = VideoData.reviewer1.name == reviewer? "Fachkompetenzen" : reviewType
@@ -195,7 +195,7 @@ app.post('/getVideo', express.text(), async (req, res) => {
 app.post('/upload', uploadMultiple, async (req, res) => {
   try {
     let dir = rand(100000, 999999);
-    while (UUIDs.some(v => v.uuid === dir)) {
+    while (UUIDs.videos.some(v => v.uuid === dir)) {
       dir = rand(100000, 999999);
     }
 
@@ -215,9 +215,9 @@ app.post('/upload', uploadMultiple, async (req, res) => {
     const reviewer3 = { name: pickReviewer([reviewer1.name, reviewer2.name]), done: false };
     const newVideo = { uuid: dir, reviewer1, reviewer2, reviewer3 };
 
-    UUIDs.push(newVideo);
-    const jsonData = JSON.stringify({ videos: UUIDs }, null, 2);
-    fs.writeFileSync('UUIDs.json', jsonData, 'utf8');
+    UUIDs.videos.push(newVideo);
+    const jsonData = JSON.stringify({ videos: UUIDs.videos }, null, 2);
+    fs.writeFileSync('UUIDs.videos.json', jsonData, 'utf8');
 
     await webdavClient.createDirectory(`JP/${dir}`, { recursive: true });
     if (req.files.file) {
@@ -242,9 +242,9 @@ app.post('/upload', uploadMultiple, async (req, res) => {
 
 
 app.post('/LehrerAnmeldung', express.json(), async (req, res) => {
-    let jsonFile = JSON.parse(fs.readFileSync('UUIDs.json', 'utf8'));
+    let jsonFile = JSON.parse(fs.readFileSync('UUIDs.videos.json', 'utf8'));
     console.log(req.body)
     jsonFile.reviewers.push(req.body);
-    fs.writeFileSync('UUIDs.json', JSON.stringify(jsonFile, null, 2), 'utf8');
+    fs.writeFileSync('UUIDs.videos.json', JSON.stringify(jsonFile, null, 2), 'utf8');
     res.sendStatus(200);
 });
