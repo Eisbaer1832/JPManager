@@ -12,8 +12,6 @@ const SourcesCheckHelper = document.getElementById("SourcesCheckHelper")
 const SourcesInput = document.getElementById("SourcesInput")
 const VideoUploadInput = document.getElementById("VideoUploadInput")
 const VideoUploadHelper = document.getElementById("VideoUploadHelper")
-const ConsentInput = document.getElementById("ConsentInput")
-const ConsentHelper = document.getElementById("ConsentHelper")
 
 const Popup = document.getElementById("Popup")
 const PopupText = document.getElementById("PopupText")
@@ -39,7 +37,17 @@ $(document).ready(function(){
 	});
 });
 
+function showVid() {
+	const videoPlayer = document.getElementById('videoPlayer');
+	videoPlayer.classList.remove("disabled")
+	var source = document.createElement('source')
+	videoPlayer.replaceChildren();
+	source.src = URL.createObjectURL(VideoUploadInput.files[0]);
 
+	videoPlayer.replaceChildren(source);
+	videoPlayer.play();
+
+}
 function isInputEmpty(input) {
 	if (input.value.trim().length == 0) {
 		input.classList.add("is-danger")
@@ -73,7 +81,6 @@ function checkForErrors() {
 	passed = isCheckboxTicked(PresenterVisibleInput, PresenterVisibleHelper) ? passed : false
 	passed = isCheckboxTicked(SourcesCheckInput, SourcesCheckHelper) ? passed : false
 	passed = isInputEmpty(SourcesInput) ? false : passed
-	passed = isCheckboxTicked(ConsentInput, ConsentHelper) ? passed : false
 
 	if (SubjectInput.value == "Fachbereich wählen"){
 		SubjectInput.classList.add("is-danger")

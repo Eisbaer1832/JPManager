@@ -32,6 +32,20 @@
 
     <!--FORM Chapter-->
     <div class="form">
+         <video class="form disabled" id="videoPlayer"width="90%" height="240" controls>
+            Your browser does not support the video tag.
+        </video> 
+ 
+        <div class="field ">
+            <label class="label">Video</label>
+            <div class="control">
+                <input id="VideoUploadInput" onclick="showVid()" accept="video/*" type="file" id="input" multiple />            
+            </div>
+            <p id="VideoUploadHelper" class="is-hidden"><strong  class="help is-danger"> Bitte lade ein Video hoch!</strong></p>
+
+        </div>
+
+
         <div class="field">
             <label class="label">Vorname</label>
             <div class="control">
@@ -93,7 +107,7 @@
             <div class="control">
                 <input id="DurationInput" class="input" type="text" placeholder="Dauer in Sekunden">
             </div>
-            <p id="DurationleHelper" class="is-hidden"><strong  class="help is-danger"> Stelle sicher, dass du gut sichtbar bist! </strong></p>
+            <p id="DurationleHelper" class="is-hidden"><strong  class="help is-danger"> Dein Video erfüllt nicht die Längenvorgaben! Du kannst trotzdem abgeben, wirst jedoch nicht die volle Punktzahl erreichen können. </strong></p>
         </div>
 
         <div class="field">
@@ -112,27 +126,6 @@
             <div class="control">
                 <textarea id="SourcesInput" class="textarea" placeholder="Liste aller verwendeten Quellen"></textarea>
             </div>
-        </div>
-
-        <div class="field ">
-            <label class="label">Video</label>
-            <div class="control">
-                <input id="VideoUploadInput" accept="video/*" type="file" id="input" multiple />            
-            </div>
-            <p id="VideoUploadHelper" class="is-hidden"><strong  class="help is-danger"> Bitte lade ein Video hoch!</strong></p>
-
-        </div>
-
-
-        <div class="field">
-            <div class="control">
-                <label class="checkbox">
-                <input id="ConsentInput" type="checkbox">
-                Ich stimme Kram zu
-                </label>
-            </div>
-            <p id="ConsentHelper" class="is-hidden"><strong  class="help is-danger"> Stimme den Bedingungen zu, wenn du teilnehmen willst!</strong></p>
-
         </div>
 
         <div class="field is-grouped">
